@@ -1,11 +1,9 @@
 import store from './store'
 import * as React from 'react'
-import {
-    Provider
-} from 'mobx-react';
-import ReactDOM from 'react-dom';
-import Router from './routes';
-import {enableLogging} from 'mobx-logger';
+import { Provider } from 'mobx-react'
+import ReactDOM from 'react-dom'
+import Router from './routes'
+import { enableLogging } from 'mobx-logger'
 
 enableLogging({
     predicate: () => true,
@@ -13,10 +11,11 @@ enableLogging({
     reaction: true,
     transaction: true,
     compute: true
-});
+})
+
 ReactDOM.render(
     <Provider store={store}>
-        <Router />
+        <Router/>
     </Provider>,
     document.getElementById("app")
 )
