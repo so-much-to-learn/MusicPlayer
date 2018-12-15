@@ -1,6 +1,7 @@
-const webpack = require('webpack'),
-    path = require('path'),
-    HtmlWebpackPlugin = require('html-webpack-plugin')
+const webpack = require('webpack')
+const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const ExtractTextPlugin = require("extract-text-webpack-plugin")
 
 const getAbsolutePath = (relativePath) => {
     return path.resolve(__dirname, relativePath)
@@ -20,20 +21,26 @@ module.exports = {
     module: {
         rules: [
             // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
-            { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
-
             {
+                test: /\.tsx?$/,
+                loader: "awesome-typescript-loader"
+            }, {
                 test: /\.css$/,
-                use: ['style-loader', 'css-loader']
-            },
-
-            {
+                use: ExtractTextPlugin.extract({
+                    fallback: "style-loader",
+                    use: "css-loader"
+                })
+            }, {
                 test: /\.scss$/,
-                use: [{ loader: "style-loader" }, { loader: "css-loader" }, { loader: "sass-loader" }]
-            },
-
-            // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
-            { enforce: "pre", test: /\.js$/, loader: "source-map-loader" }
+                use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: ['css-loader', 'sass-loader']
+                })
+            }, {
+                enforce: "pre",
+                test: /\.js$/,
+                loader: "source-map-loader"
+            }
         ]
     },
     externals: {
@@ -46,6 +53,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             title: "音乐播放器",
             template: "index.html"
-        })
+        }),
+        new ExtractTextPlugin('index.css')
     ]
 }

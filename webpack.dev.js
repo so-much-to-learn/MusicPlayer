@@ -6,6 +6,7 @@ const merge = require('webpack-merge'),
         return path.resolve(__dirname, relativePath)
     }
 // webpackHotMiddleware = 'webpack-hot-middleware/client?path=/__webpack_hmr&reload=true';
+
 const devConfig = merge(common, {
     entry: ['webpack-hot-middleware/client?noInfo=true&reload=true', getAbsolutePath('src/App.tsx')],
     mode: 'development',
