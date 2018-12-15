@@ -14,7 +14,7 @@ const devConfig = merge(common, {
     devServer: {
         contentBase: "./dist",
         compress: true,
-        port: 3000,
+        port: 9903,
         publicPath: '/'
     },
     plugins: [

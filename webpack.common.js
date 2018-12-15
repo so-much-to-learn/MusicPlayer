@@ -2,21 +2,26 @@ const webpack = require('webpack')
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require("extract-text-webpack-plugin")
+const host = require('ip').address()
 
-const getAbsolutePath = (relativePath) => {
-    return path.resolve(__dirname, relativePath)
+function resolve(dir) {
+    return path.join(__dirname, dir)
 }
 
 module.exports = {
     entry: {
-        main: [getAbsolutePath('src/App.tsx')]
+        main: [resolve('src/App.tsx')]
     },
     output: {
-        path: getAbsolutePath('dist'),
+        path: resolve('dist'),
         filename: '[name].js'
     },
     resolve: {
-        extensions: [".ts", ".tsx", ".js", ".jsx", ".json"]
+        extensions: [".ts", ".tsx", ".js", ".jsx", ".json"],
+        alias: {
+            src: resolve('src'),
+            assets: resolve('src/assets')
+        }
     },
     module: {
         rules: [
@@ -36,6 +41,16 @@ module.exports = {
                     fallback: 'style-loader',
                     use: ['css-loader', 'sass-loader']
                 })
+            }, , {
+                test: /\.(png|jpe?g|gif)$/,
+                use: [{
+                    loader: 'url-loader', options: { limit: 8192, name: 'res/[name].[ext]' }
+                }]
+            }, {
+                test: /\.(woff|woff2|eot|ttf|otf|svg)$/,
+                use: [{
+                    loader: 'url-loader', options: { limit: 8192, name: 'res/[name].[ext]' }
+                }]
             }, {
                 enforce: "pre",
                 test: /\.js$/,
