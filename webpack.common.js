@@ -25,6 +25,13 @@ module.exports = {
     module: {
         rules: [
             {
+                test: /\.jsx?$/,
+                exclude: /(node_modules|bower_components)/,
+                use: {
+                    loader: 'babel-loader',
+                    options: { presets: ['env'] }
+                }
+            }, {
                 test: /\.tsx?$/,
                 loader: "awesome-typescript-loader"
             }, {
@@ -68,6 +75,6 @@ module.exports = {
             favicon: './favicon.ico',
             template: "./index.html"
         }),
-        new ExtractTextPlugin('index.css')
+        new ExtractTextPlugin('css/[name].css')
     ]
 }
