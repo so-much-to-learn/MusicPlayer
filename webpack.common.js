@@ -2,18 +2,20 @@ const webpack = require('webpack')
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require("extract-text-webpack-plugin")
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 function resolve(dir) {
     return path.join(__dirname, dir)
 }
 
 module.exports = {
-    entry: [
-        resolve('src/App.tsx')
-    ],
+    entry: {
+        index: [resolve('src/App.tsx')]
+    },
     output: {
         path: resolve('dist'),
-        filename: '[name].js'
+        filename: 'js/[name].js',
+        publicPath: 'http://localhost:3000/'
     },
     resolve: {
         extensions: [".ts", ".tsx", ".js", ".jsx", ".json"],
@@ -25,23 +27,17 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.jsx?$/,
+                test: /\.(js|jsx)?$/,
                 exclude: /(node_modules|bower_components)/,
                 use: {
                     loader: 'babel-loader',
                     options: { presets: ['env'] }
                 }
             }, {
-                test: /\.tsx?$/,
+                test: /\.(ts|tsx)?$/,
                 loader: "awesome-typescript-loader"
             }, {
-                test: /\.css$/,
-                use: ExtractTextPlugin.extract({
-                    fallback: "style-loader",
-                    use: "css-loader"
-                })
-            }, {
-                test: /\.scss$/,
+                test: /\.(css|scss)$/,
                 use: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
                     use: ['css-loader', 'sass-loader']
@@ -75,6 +71,7 @@ module.exports = {
             favicon: './favicon.ico',
             template: "./index.html"
         }),
-        new ExtractTextPlugin('css/[name].css')
+        new ExtractTextPlugin('css/[name].css'),
+        new CleanWebpackPlugin(['dist/**/*'])
     ]
 }
